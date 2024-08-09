@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crud</title>
+</head>
+<style>
+    button {
+        background: #333;
+        color: white;
+        border-radius: 40px;
+        cursor: pointer;
+    }
+</style>
+<body>
+    
+<nav style=" padding: 2% 0% 2% 0%; background: #333; border-radius: 7px; width: 100%;">
+    <div style="float: left; width: 4%; padding: 1%;">
+        <a href="{% url 'pagina_de_inicio' %}"><button><<<</button></a>
+    </div>
+    <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; width: 93%;">
+        <h1 style="color: lightcyan; float: right;">MASCOTAS REGISTRADAS</h1>
+    </div>
+</nav>
+<br>
+<a href="{% url 'crear_mascota' %}"><button style="float: left; width: 15%; height: 100%; margin-right: 40%; padding: 1%;">AGREGAR</button></a>
+<div style="width: 80%; margin-top: 5%;" class="container">
+{% for mascota in mascotas %}
+
+<section class="page-section clearfix">
+    <div class="container"> 
+        <div class="intro" style="display: flex; justify-content: center;" >
+            <div style="border: solid; width:95%; height: 250px; margin-top: 2%; border-radius: 15px; background: rgb(207, 210, 210); " >
+                <div id="imagen" style="width: 20%; height: 250px  ; float: left; overflow: hidden;">
+                    <img src="{{ mascota.foto.url }} " style="width: 100%; height: 100%; object-fit: cover; border-radius: 5%;">
+                </div>
+                <div style="float: right; width: 80%; height: 250px;">
+                    <h1 class="section-heading mbi-4" style="padding: 1% 0% 0% 5%;">
+                        <span class="section-heading-lower">Nombre: {{ mascota.nombre }} </span><br>
+                        <span class="section-heading-upper">Descripcion: {{ mascota.descripcion }}</span><br>
+                        Edad: {{ mascota.edad }} años<br>
+                        Raza: {{ mascota.raza }}<br>
+                        Genero: {{ mascota.genero }}
+                    </h1>
+                    <div style="float: right; height: 20%;  width: 50%;">
+                        <button onclick="confirmarEliminacion('{{ mascota.id }}')" style="float: left; height: 100%; width: 40%;">ELIMINAR</button>
+                        <a href="{% url 'modificar' mascota.id %}"><button style="height: 100%; margin-left: 2%; width: 40%;">MODIFICAR</button></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endfor %}
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function confirmarEliminacion(mascota_id) {
+        Swal.fire({
+            title: "¿Estás seguro?",
+            text: "La acción no podrá revertirse",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Eliminar",
+            cancelButtonText: "Cancelar"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "{% url 'eliminar' 0 %}".replace('0', mascota_id);
+            }
+        });
+    }
+</script>
+
+</div> 
+</body>
+</html>
